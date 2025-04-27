@@ -40,9 +40,9 @@ def visualise_pie_chart():
     if data is None:
         messagebox.showerror("Error", "No data loaded")
 
-    employee_count = data['Department'].value_counts()
+    employeeAmount = data['Department'].value_counts()
 
-    if employee_count.isnull().any() or (employee_count == 0).any():
+    if employeeAmount.isnull().any() or (employeeAmount == 0).any():
         messagebox.showerror("Error", "Data invalid")
         return
 
@@ -53,7 +53,7 @@ def visualise_pie_chart():
     pie_window.resizable(False, False)
 
     fig, ax = plt.subplots(figsize=(6,6))
-    ax.pie(employee_count, labels=employee_count.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
+    ax.pie(employeeAmount, labels=employeeAmount.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
 
     ax.axis('equal')
 
