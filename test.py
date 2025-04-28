@@ -75,17 +75,16 @@ def visualise_bar_plot():
         return
 
     plt.figure(figsize=(10,6))
-    plt.bar(data['MaritalStatus'], employeeAmount, color='skyblue', edgecolor="black")
+    plt.bar(data['MaritalStatus'], employeeAmount.values, color='skyblue', edgecolor="black")
 
     plt.title("Marital Status")
     plt.xlabel("MaritalStatus")
-    plt.ylabel(employeeAmount)
+    plt.ylabel("Number of Employees")
 
     plt.xticks(rotation=45)
 
-    barCanvas = FigureCanvasTkAgg()
-    barCanvas.draw()
-    barCanvas.get_tk_widget().pack(pady=20)
+    plt.tight_layout()
+    plt.show()
 
 pie_label = tk.Label(root, text='Click for Deparments:', font=("Arial", 10))
 pie_label.grid(row=3, column=0, padx=10, pady=10)
