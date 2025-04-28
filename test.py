@@ -64,18 +64,20 @@ def visualise_pie_chart():
 def visualise_bar_plot():
     if data is None:
         messagebox.showerror("Error", "No data loaded")
+        return
 
     if 'MaritalStatus' not in data.columns:
         messagebox.showerror("Error", "Require columns not found in file")
         return
 
-    employeeAmount = data['MaritalStatus']
-    if employeeAmount.isnull().any() or (employeeAmount == 0).any():
+    employeeAmount = data['MaritalStatus'].value_counts()
+
+    if employeeAmount.empty:
         messagebox.showerror("Error", "Data invalid")
         return
 
     plt.figure(figsize=(10,6))
-    plt.bar(data['MaritalStatus'], employeeAmount.values, color='skyblue', edgecolor="black")
+    plt.bar(employeeAmount.index, employeeAmount.values, color='skyblue', edgecolor="black")
 
     plt.title("Marital Status")
     plt.xlabel("MaritalStatus")
