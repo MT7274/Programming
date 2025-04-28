@@ -9,18 +9,9 @@ data = None
 selected_file = None
 
 root = tk.Tk()
-root.title("Simple Tkinter GUI")
+root.title("Employee Engagement")
 
-root.geometry("550x350")
-
-greeting_label = tk.Label(root, text="Hello", font=("Arial", 14))
-greeting_label.grid(row=0, column=0, padx=10)
-
-def on_button_click():
-    messagebox.showinfo("Greeting", "Greets")
-
-greeting_button = tk.Button(root, text="Click", command=on_button_click)
-greeting_button.grid(row=0, column=1, padx=10)
+root.geometry("500x300")
 
 def browse_file():
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("CSV Files", "*.csv")])
@@ -41,9 +32,9 @@ def visualise_pie_chart():
     if data is None:
         messagebox.showerror("Error", "No data loaded")
 
-    employeeAmount = data['Department'].value_counts()
+    employee_amount = data['Department'].value_counts()
 
-    if employeeAmount.isnull().any() or (employeeAmount == 0).any():
+    if employee_amount.isnull().any() or (employee_amount == 0).any():
         messagebox.showerror("Error", "Data invalid")
         return
 
@@ -54,12 +45,14 @@ def visualise_pie_chart():
     pie_window.resizable(False, False)
 
     fig, ax = plt.subplots(figsize=(6,6))
-    ax.pie(employeeAmount, labels=employeeAmount.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
+    ax.pie(employee_amount, labels=employee_amount.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
     ax.axis('equal')
 
     pieCanvas = FigureCanvasTkAgg(fig, master=pie_window)
     pieCanvas.draw()
     pieCanvas.get_tk_widget().pack(pady=20)
+
+    plt.close(fig)
 
 def visualise_bar_plot():
     if data is None:
@@ -70,14 +63,14 @@ def visualise_bar_plot():
         messagebox.showerror("Error", "Require columns not found in file")
         return
 
-    employeeAmount = data['MaritalStatus'].value_counts()
+    employee_amount = data['MaritalStatus'].value_counts()
 
-    if employeeAmount.empty:
+    if employee_amount.empty:
         messagebox.showerror("Error", "Data invalid")
         return
 
     plt.figure(figsize=(10,6))
-    plt.bar(employeeAmount.index, employeeAmount.values, color='skyblue', edgecolor="black")
+    plt.bar(employee_amount.index, employee_amount.values, color='skyblue', edgecolor="black")
 
     plt.title("Marital Status")
     plt.xlabel("MaritalStatus")
@@ -87,6 +80,26 @@ def visualise_bar_plot():
 
     plt.tight_layout()
     plt.show()
+
+def visualise_dashboard():
+    if data is None:
+        messagebox.showerror("Error", "No data loaded")
+        return
+
+    dashboard_window = tk.Toplevel(root)
+    dashboard_window.title("Dashboard Summary")
+    dashboard_window.geometry("400x300")
+    dashboard_window.resizable(False, False)
+
+    avg_work_life_balance = data["WorkLifeBalance"].mean()
+    attrition_rate = (data['Attrition'].value_counts(normalise=True).get('Yes', 0)) * 100
+    employee_count = data["EmployeeID"].nunique()
+
+    tk.Label(dashboard_window, text="Dashboard Summary", font=("Arial", 16, "bold")).pack(pady=10)
+
+    tk.Label(dashboard_window, text=f"Average Work-Life Balance {avg_work_life_balance}", font=("Arial", 12)).pack(pady=5)
+    tk.Label(dashboard_window, text=f"Attrition Rate {attrition_rate}%", font=("Arial", 12)).pack(pady=5)
+    tk.Label(dashboard_window, text=f"Total Employees: {employee_count}", font=("Arial", 12)).pack(pady=5)
 
 pie_label = tk.Label(root, text='Click for Deparments:', font=("Arial", 10))
 pie_label.grid(row=3, column=0, padx=10, pady=10)
@@ -100,6 +113,12 @@ hist_label.grid(row=4, column=0, padx=10, pady=10)
 hist_button = tk.Button(root, text="Bar Graph", font=("Arial", 10), command=visualise_bar_plot)
 hist_button.grid(row=4, column=1, padx=10, pady=10)
 
+dashboard_label = tk.Label(root, text='Click for Dashboard: ', font=("Arial", 10))
+dashboard_label.grid(row=5, column=0, padx=10, pady=10)
+
+dashboard_button = tk.Button(root, text="Dashboard", font=("Arial", 10), command=visualise_dashboard)
+dashboard_button.grid(row=5, column=1, padx=10, pady=10)
+
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
@@ -108,5 +127,8 @@ file_label.grid(row=1, column=0, padx=10, pady=10)
 
 browse_button = tk.Button(root, text="Browse File", command=browse_file)
 browse_button.grid(row=1, column=1, padx=10, pady=10)
+
+root.update()
+root.minsize(root.winfo_width(), root.winfo_height())
 
 root.mainloop()
