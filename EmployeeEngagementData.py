@@ -11,7 +11,7 @@ selected_file = None
 root = tk.Tk()
 root.title("Employee Engagement")
 
-root.geometry("500x300")
+root.geometry("550x300")
 
 def browse_file():
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("CSV Files", "*.csv")])
@@ -93,13 +93,16 @@ def visualise_dashboard():
 
     avg_work_life_balance = data["WorkLifeBalance"].mean()
     attrition_rate = (data['Attrition'].value_counts(normalize=True).get('Yes', 0)) * 100
-    employee_count = data["EmployeeID"].nunique()
+    employees_per_department = data["Department"].value_counts()
 
     tk.Label(dashboard_window, text="Dashboard Summary", font=("Arial", 16, "bold")).pack(pady=10)
 
     tk.Label(dashboard_window, text=f"Average Work-Life Balance {avg_work_life_balance}", font=("Arial", 12)).pack(pady=5)
     tk.Label(dashboard_window, text=f"Attrition Rate {attrition_rate}%", font=("Arial", 12)).pack(pady=5)
-    tk.Label(dashboard_window, text=f"Total Employees: {employee_count}", font=("Arial", 12)).pack(pady=5)
+    tk.Label(dashboard_window, text=f"Employees per Department", font=("Arial", 12, "bold")).pack(pady=10)
+
+    for department, count in employees_per_department.items():
+        tk.Label(dashboard_window, text=f"{department}: {count} employees", font=("Arial", 12)).pack(pady=3)
 
 pie_label = tk.Label(root, text='Click for Deparments:', font=("Arial", 10))
 pie_label.grid(row=3, column=0, padx=10, pady=10, sticky='w')
@@ -122,7 +125,7 @@ dashboard_button.grid(row=5, column=1, padx=10, pady=10, sticky='w')
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='w')
 
-file_label = tk.Label(root, text="No file selected", font=("Arial", 14))
+file_label = tk.Label(root, text="No file selected", font=("Arial", 10))
 file_label.grid(row=1, column=0, padx=10, pady=10, sticky='w')
 
 browse_button = tk.Button(root, text="Browse File", command=browse_file)
