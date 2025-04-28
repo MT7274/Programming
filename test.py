@@ -75,7 +75,7 @@ def visualise_bar_plot():
         return
 
     plt.figure(figsize=(10,6))
-    plt.bar(data['MaritalStatus'], color='skyblue', edgecolor="black")
+    plt.bar(data['MaritalStatus'], employeeAmount, color='skyblue', edgecolor="black")
 
     plt.title("Marital Status")
     plt.xlabel("MaritalStatus")
