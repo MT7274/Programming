@@ -92,7 +92,7 @@ def visualise_dashboard():
     dashboard_window.resizable(False, False)
 
     avg_work_life_balance = data["WorkLifeBalance"].mean()
-    attrition_rate = (data['Attrition'].value_counts(normalise=True).get('Yes', 0)) * 100
+    attrition_rate = (data['Attrition'].value_counts(normalize=True).get('Yes', 0)) * 100
     employee_count = data["EmployeeID"].nunique()
 
     tk.Label(dashboard_window, text="Dashboard Summary", font=("Arial", 16, "bold")).pack(pady=10)
