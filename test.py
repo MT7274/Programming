@@ -57,15 +57,47 @@ def visualise_pie_chart():
     ax.pie(employeeAmount, labels=employeeAmount.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
     ax.axis('equal')
 
-    canvas = FigureCanvasTkAgg(fig, master=pie_window)
-    canvas.draw()
-    canvas.get_tk_widget().pack(pady=20)
+    pieCanvas = FigureCanvasTkAgg(fig, master=pie_window)
+    pieCanvas.draw()
+    pieCanvas.get_tk_widget().pack(pady=20)
 
-pie_label = tk.Label(root, text='Click for pie chart:', font=("Arial", 10))
+def visualise_bar_plot():
+    if data is None:
+        messagebox.showerror("Error", "No data loaded")
+
+    if 'MaritalStatus' not in data.columns:
+        messagebox.showerror("Error", "Require columns not found in file")
+        return
+
+    employeeAmount = data['MaritalStatus']
+    if employeeAmount.isnull().any() or (employeeAmount == 0).any():
+        messagebox.showerror("Error", "Data invalid")
+        return
+
+    plt.figure(figsize=(10,6))
+    plt.bar(data['MaritalStatus'], color='skyblue', edgecolor="black")
+
+    plt.title("Marital Status")
+    plt.xlabel("MaritalStatus")
+    plt.ylabel(employeeAmount)
+
+    plt.xticks(rotation=45)
+
+    barCanvas = FigureCanvasTkAgg()
+    barCanvas.draw()
+    barCanvas.get_tk_widget().pack(pady=20)
+
+pie_label = tk.Label(root, text='Click for Deparments:', font=("Arial", 10))
 pie_label.grid(row=3, column=0, padx=10, pady=10)
 
 pie_button = tk.Button(root, text="Pie Chart", font=("Arial", 10), command=visualise_pie_chart)
 pie_button.grid(row=3, column=1, padx=10, pady=10)
+
+hist_label = tk.Label(root, text='Click for Marital Status: ', font=("Arial", 10))
+hist_label.grid(row=3, column=0, padx=10, pady=10)
+
+hist_button = tk.Button(root, text="Bar Graph", font=("Arial", 10), command=visualise_bar_plot)
+hist_button.grid(row=3, column=1, padx=10, pady=10)
 
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
