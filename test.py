@@ -3,6 +3,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 data = None
 selected_file = None
@@ -54,10 +55,11 @@ def visualise_pie_chart():
 
     fig, ax = plt.subplots(figsize=(6,6))
     ax.pie(employeeAmount, labels=employeeAmount.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
-
     ax.axis('equal')
 
-    plt.show()
+    canvas = FigureCanvasTkAgg(fig, master=pie_window)
+    canvas.draw()
+    canvas.get_tk_widget().pack(pady=20)
 
 pie_label = tk.Label(root, text='Click for pie chart:', font=("Arial", 10))
 pie_label.grid(row=3, column=0, padx=10, pady=10)
