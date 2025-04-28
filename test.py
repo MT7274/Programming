@@ -94,10 +94,10 @@ pie_button = tk.Button(root, text="Pie Chart", font=("Arial", 10), command=visua
 pie_button.grid(row=3, column=1, padx=10, pady=10)
 
 hist_label = tk.Label(root, text='Click for Marital Status: ', font=("Arial", 10))
-hist_label.grid(row=3, column=0, padx=10, pady=10)
+hist_label.grid(row=4, column=0, padx=10, pady=10)
 
 hist_button = tk.Button(root, text="Bar Graph", font=("Arial", 10), command=visualise_bar_plot)
-hist_button.grid(row=3, column=1, padx=10, pady=10)
+hist_button.grid(row=4, column=1, padx=10, pady=10)
 
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
