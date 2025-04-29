@@ -35,7 +35,7 @@ def upload_file():
 
             summary_dict = {
                 "Total Employees": len(data),
-                "Unique Departments": data['Department'].unique().tolist(),
+                "Unique Departments": ', '.join(data['Department'].unique()),
                 "Employees per Department": data['Department'].value_counts().to_dict(),
                 "Gender Count": data['Gender'].value_counts().to_dict(),
                 "Age": {
@@ -159,7 +159,13 @@ def view_summary():
     text_widget.pack(padx=10, pady=10, fill="both", expand=True)
 
     for key, value in summary_dict.items():
-        text_widget.insert("end", f"{key}:\n{value}\n\n")
+        if isinstance(value, dict):
+            text_widget.insert("end", f"{key}:\n")
+            for subkey, subval in value.items():
+                text_widget.insert("end", f"  {subkey}: {subval}\n")
+            text_widget.insert("end", "\n")
+        else:
+            text_widget.insert("end", f"{key}:\n{value}\n\n")
 
     text_widget.config(state="disabled")
 
@@ -174,7 +180,13 @@ def export_summary():
         try:
             with open(file_path, "w") as f:
                 for key, value in summary_dict.items():
-                    f.write(f"{key}:\n{value}\n\n")
+                    f.write(f"{key}:\n")
+                    if isinstance(value, dict):
+                        for subkey, subval in value.items():
+                            f.write(f"  {subkey}: {subval}\n")
+                    else:
+                        f.write(f"{value}\n")
+                    f.write("\n")
                 messagebox.showinfo("Success", f"Summary exported successfully to {file_path}")
         except Exception as e:
             messagebox.showerror("Error", f"Failed to export summary: {e}")
