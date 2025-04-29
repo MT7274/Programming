@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter import messagebox
-from tkinter import filedialog
 import pandas as pd
 import matplotlib.pyplot as plt
+from tkinter import messagebox
+from tkinter import filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 data = None
@@ -218,7 +218,7 @@ export_button.grid(row=6, column=1, padx=10, pady=10, sticky='w')
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='w')
 
-file_label = tk.Label(root, text="No file selected", font=("Arial", 10))
+file_label = tk.Label(root, text="No file selected", font=("Arial", 10), wraplength=400, justify="left")
 file_label.grid(row=1, column=0, padx=10, pady=10, sticky='w')
 
 browse_button = tk.Button(root, text="Browse File", command=browse_file)
