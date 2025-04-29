@@ -7,6 +7,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 data = None
 selected_file = None
+summary_dict = None
 
 root = tk.Tk()
 root.title("Employee Engagement")
@@ -23,8 +24,46 @@ def browse_file():
 def upload_file():
     global data, summary_dict
     if selected_file:
-        data = pd.read_csv(selected_file)
-        messagebox.showinfo("Upload Status", f"File '{selected_file}' uploaded successfully")
+        try:
+            data = pd.read_csv(selected_file)
+
+            required_columns = ['Department', 'Gender', 'Age', 'DistanceFromHome', 'HourlyRate', 'MaritalStatus', 'WorkLifeBalance', 'Attrition']
+            if not all(col in data.columns for col in required_columns):
+                messagebox.showerror("Error", "Missing required columns in the dataset.")
+                data = None
+                return
+
+            summary_dict = {
+                "Total Employees": len(data),
+                "Unique Departments": data['Department'].unique().tolist(),
+                "Employees per Department": data['Department'].value_counts().to_dict(),
+                "Gender Count": data['Gender'].value_counts().to_dict(),
+                "Age": {
+                    "Minimum": int(data['Age'].min()),
+                    "Maximum": int(data['Age'].max()),
+                    "Average": round(data['Age'].mean(), 2)
+                },
+                "Distance From Home": {
+                    "Minimum": int(data['DistanceFromHome'].min()),
+                    "Maximum": int(data['DistanceFromHome'].max()),
+                    "Average": round(data['DistanceFromHome'].mean(), 2)
+                },
+                "Hourly Rate": {
+                    "Minimum": int(data['HourlyRate'].min()),
+                    "Maximum": int(data['HourlyRate'].max()),
+                    "Average": round(data['HourlyRate'].mean(), 2)
+                },
+                "Marital Status Percentages": (
+                    data['MaritalStatus'].value_counts(normalize=True) * 100
+                ).round(2).to_dict(),
+                "Average Work Life Balance": round(data['WorkLifeBalance'].mean(), 2),
+                "Total Attritions": int(data['Attrition'].value_counts().get('Yes', 0))
+            }
+
+            messagebox.showinfo("Upload Status", f"File '{selected_file}' uploaded and summary generated successfully.")
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load file: {e}")
     else:
         messagebox.showerror("Error", "No file selected")
 
@@ -104,6 +143,42 @@ def visualise_dashboard():
     for department, count in employees_per_department.items():
         tk.Label(dashboard_window, text=f"{department}: {count} employees", font=("Arial", 12)).pack(pady=3)
 
+def view_summary():
+    if summary_dict is None:
+        messagebox.showerror("Error", "No summary available. Upload File")
+        return
+
+    summary_window = tk.Toplevel(root)
+    summary_window.title("Data Summary")
+    summary_window.geometry("500x600")
+    summary_window.resizable(True, True)
+
+    tk.Label(summary_window, text="Data Summary", font=("Arial", 16, "bold")).pack(pady=10)
+
+    text_widget = tk.Text(summary_window, wrap="word", font=("Arial", 10))
+    text_widget.pack(padx=10, pady=10, fill="both", expand=True)
+
+    for key, value in summary_dict.items():
+        text_widget.insert("end", f"{key}:\n{value}\n\n")
+
+    text_widget.config(state="disabled")
+
+def export_summary():
+    if summary_dict is None:
+        messagebox.showerror("Error", "No summary available")
+        return
+
+    file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")], title="Save Summary As")
+
+    if file_path:
+        try:
+            with open(file_path, "w") as f:
+                for key, value in summary_dict.items():
+                    f.write(f"{key}:\n{value}\n\n")
+                messagebox.showinfo("Success", f"Summary exported successfully to {file_path}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to export summary: {e}")
+
 pie_label = tk.Label(root, text='Click for Deparments:', font=("Arial", 10))
 pie_label.grid(row=3, column=0, padx=10, pady=10, sticky='w')
 
@@ -121,6 +196,12 @@ dashboard_label.grid(row=5, column=0, padx=10, pady=10, sticky='w')
 
 dashboard_button = tk.Button(root, text="Dashboard", font=("Arial", 10), command=visualise_dashboard)
 dashboard_button.grid(row=5, column=1, padx=10, pady=10, sticky='w')
+
+summary_button = tk.Button(root, text="View Summary", font=("Arial", 10), command=view_summary)
+summary_button.grid(row=6, column=0, padx=10, pady=10, sticky='w')
+
+export_button = tk.Button(root, text="Export Summary", font=("Arial", 10), command=export_summary)
+export_button.grid(row=6, column=1, padx=10, pady=10, sticky='w')
 
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='w')
