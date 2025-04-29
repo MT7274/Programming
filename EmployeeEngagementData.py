@@ -21,7 +21,7 @@ def browse_file():
         selected_file = file_path
 
 def upload_file():
-    global data
+    global data, summary_dict
     if selected_file:
         data = pd.read_csv(selected_file)
         messagebox.showinfo("Upload Status", f"File '{selected_file}' uploaded successfully")
