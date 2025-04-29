@@ -12,7 +12,7 @@ summary_dict = None
 root = tk.Tk()
 root.title("Employee Engagement")
 
-root.geometry("550x300")
+root.geometry("450x200")
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=1)
 
@@ -193,30 +193,7 @@ def export_summary():
         except Exception as e:
             messagebox.showerror("Error", f"Failed to export summary: {e}")
 
-pie_label = tk.Label(root, text='Click for Deparments:', font=("Arial", 10))
-pie_label.grid(row=3, column=0, padx=10, pady=10, sticky='w')
-
-pie_button = tk.Button(root, text="Pie Chart", font=("Arial", 10), command=visualise_pie_chart)
-pie_button.grid(row=3, column=1, padx=10, pady=10, sticky='w')
-
-hist_label = tk.Label(root, text='Click for Marital Status: ', font=("Arial", 10))
-hist_label.grid(row=4, column=0, padx=10, pady=10, sticky='w')
-
-hist_button = tk.Button(root, text="Bar Graph", font=("Arial", 10), command=visualise_bar_plot)
-hist_button.grid(row=4, column=1, padx=10, pady=10, sticky='w')
-
-dashboard_label = tk.Label(root, text='Click for Dashboard: ', font=("Arial", 10))
-dashboard_label.grid(row=5, column=0, padx=10, pady=10, sticky='w')
-
-dashboard_button = tk.Button(root, text="Dashboard", font=("Arial", 10), command=visualise_dashboard)
-dashboard_button.grid(row=5, column=1, padx=10, pady=10, sticky='w')
-
-summary_button = tk.Button(root, text="View Summary", font=("Arial", 10), command=view_summary)
-summary_button.grid(row=6, column=0, padx=10, pady=10, sticky='w')
-
-export_button = tk.Button(root, text="Export Summary", font=("Arial", 10), command=export_summary)
-export_button.grid(row=6, column=1, padx=10, pady=10, sticky='w')
-
+# File upload
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='w')
 
@@ -226,7 +203,34 @@ file_label.grid(row=1, column=0, padx=10, pady=10, sticky='w')
 browse_button = tk.Button(root, text="Browse File", command=browse_file)
 browse_button.grid(row=1, column=1, padx=10, pady=10, sticky='w')
 
+# Frame
+control_frame = tk.Frame(root)
+control_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='nsew')
+
+# Grid
+control_frame.grid_columnconfigure(0, weight=1)
+control_frame.grid_columnconfigure(1, weight=1)
+
+#  Pie Chart
+tk.Label(control_frame, text='Departments:', font=("Arial", 10)).grid(row=0, column=0, sticky='w')
+tk.Button(control_frame, text="Pie Chart", font=("Arial", 10), command=visualise_pie_chart).grid(row=0, column=1, sticky='w')
+
+# Bar Graph
+tk.Label(control_frame, text='Marital Status:', font=("Arial", 10)).grid(row=1, column=0, sticky='w')
+tk.Button(control_frame, text="Bar Graph", font=("Arial", 10), command=visualise_bar_plot).grid(row=1, column=1, sticky='w')
+
+# Dashboard
+tk.Label(control_frame, text='Dashboard:', font=("Arial", 10)).grid(row=2, column=0, sticky='w')
+tk.Button(control_frame, text="Dashboard", font=("Arial", 10), command=visualise_dashboard).grid(row=2, column=1, sticky='w')
+
+# Summary and Export
+tk.Button(control_frame, text="View Summary", font=("Arial", 10), command=view_summary).grid(row=3, column=0, sticky='w', pady=(10, 0))
+tk.Button(control_frame, text="Export Summary", font=("Arial", 10), command=export_summary).grid(row=3, column=1, sticky='w', pady=(10, 0))
+
 root.update()
+root.minsize(root.winfo_width(), root.winfo_height())
+
+root.update_idletasks()
 root.minsize(root.winfo_width(), root.winfo_height())
 
 root.mainloop()
