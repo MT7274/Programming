@@ -13,6 +13,8 @@ root = tk.Tk()
 root.title("Employee Engagement")
 
 root.geometry("550x300")
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=1)
 
 def browse_file():
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("CSV Files", "*.csv")])
