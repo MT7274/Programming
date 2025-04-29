@@ -24,7 +24,7 @@ def upload_file():
     global data
     if selected_file:
         data = pd.read_csv(selected_file)
-        messagebox.showinfo("Upload Status", f"File '{selected_file} uploaded successfully")
+        messagebox.showinfo("Upload Status", f"File '{selected_file}' uploaded successfully")
     else:
         messagebox.showerror("Error", "No file selected")
 
