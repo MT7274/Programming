@@ -14,7 +14,7 @@ root.title("Employee Engagement")
 
 root.geometry("450x200")
 root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=1)
+root.grid_columnconfigure(1, weight=0)
 
 def browse_file():
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("CSV Files", "*.csv")])
@@ -195,17 +195,17 @@ def export_summary():
 
 # File upload
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
-upload_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='w')
+upload_button.grid(row=2, column=1, padx=10, pady=5, sticky='e')
 
-file_label = tk.Label(root, text="No file selected", font=("Arial", 10), wraplength=400, justify="left")
+file_label = tk.Label(root, text="No file selected", font=("Arial", 10), anchor='w', justify='left', wraplength=400)
 file_label.grid(row=1, column=0, padx=10, pady=10, sticky='w')
 
 browse_button = tk.Button(root, text="Browse File", command=browse_file)
-browse_button.grid(row=1, column=1, padx=10, pady=10, sticky='w')
+browse_button.grid(row=1, column=1, padx=10, pady=10, sticky='e')
 
 # Frame
 control_frame = tk.Frame(root)
-control_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='nsew')
+control_frame.grid(row=3, column=0, columnspan=2, padx=10, pady=10, sticky='nsew')
 
 # Grid
 control_frame.grid_columnconfigure(0, weight=1)
@@ -229,8 +229,6 @@ tk.Button(control_frame, text="Export Summary", font=("Arial", 10), command=expo
 
 root.update()
 root.minsize(root.winfo_width(), root.winfo_height())
-
 root.update_idletasks()
-root.minsize(root.winfo_width(), root.winfo_height())
 
 root.mainloop()
