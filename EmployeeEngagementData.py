@@ -12,7 +12,7 @@ summary_dict = None
 root = tk.Tk()
 root.title("Employee Engagement")
 
-root.geometry("450x200")
+root.geometry("450x250")
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=0)
 
@@ -226,6 +226,13 @@ tk.Button(control_frame, text="Dashboard", font=("Arial", 10), command=visualise
 # Summary and Export
 tk.Button(control_frame, text="View Summary", font=("Arial", 10), command=view_summary).grid(row=3, column=0, sticky='w', pady=(10, 0))
 tk.Button(control_frame, text="Export Summary", font=("Arial", 10), command=export_summary).grid(row=3, column=1, sticky='w', pady=(10, 0))
+
+root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(1, weight=1)
+root.grid_rowconfigure(2, weight=1)
+root.grid_rowconfigure(3, weight=1)
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=1)
 
 root.update()
 root.minsize(root.winfo_width(), root.winfo_height())
