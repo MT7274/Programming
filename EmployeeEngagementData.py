@@ -1,3 +1,4 @@
+# Martin Tran, Student Number: 32084076
 import tkinter as tk
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,7 +11,7 @@ selected_file = None
 summary_dict = None
 
 root = tk.Tk()
-root.title("Employee Engagement")
+root.title("Martin Tran 32084076")
 
 root.geometry("450x250")
 root.grid_columnconfigure(0, weight=1)
