@@ -101,13 +101,13 @@ def visualise_pie_chart():
 
     plt.close(fig)
 
-def visualise_bar_plot():
+def visualise_bar_graph():
     if data is None:
         messagebox.showerror("Error", "No data loaded")
         return
 
     if 'MaritalStatus' not in data.columns:
-        messagebox.showerror("Error", "Require columns not found in file")
+        messagebox.showerror("Error", "Required column not found in file")
         return
 
     employee_amount = data['MaritalStatus'].value_counts()
@@ -116,17 +116,25 @@ def visualise_bar_plot():
         messagebox.showerror("Error", "Data invalid")
         return
 
-    plt.figure(figsize=(10,6))
-    plt.bar(employee_amount.index, employee_amount.values, color='skyblue', edgecolor="black")
+    bar_window = tk.Toplevel(root)
+    bar_window.title("Marital Status")
+    bar_window.geometry("700x500")
+    bar_window.resizable(False, False)
 
-    plt.title("Marital Status")
-    plt.xlabel("MaritalStatus")
-    plt.ylabel("Number of Employees")
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.bar(employee_amount.index, employee_amount.values, color='skyblue', edgecolor="black")
 
+    ax.set_title("Marital Status")
+    ax.set_xlabel("Marital Status")
+    ax.set_ylabel("Number of Employees")
     plt.xticks(rotation=45)
-
     plt.tight_layout()
-    plt.show()
+
+    barCanvas = FigureCanvasTkAgg(fig, master=bar_window)
+    barCanvas.draw()
+    barCanvas.get_tk_widget().pack(pady=20)
+
+    plt.close(fig)
 
 def visualise_dashboard():
     if data is None:
@@ -223,7 +231,7 @@ tk.Button(control_frame, text="Pie Chart", font=("Arial", 10), command=visualise
 
 # Bar Graph
 tk.Label(control_frame, text='Marital Status:', font=("Arial", 10)).grid(row=1, column=0, sticky='w')
-tk.Button(control_frame, text="Bar Graph", font=("Arial", 10), command=visualise_bar_plot).grid(row=1, column=1, sticky='w')
+tk.Button(control_frame, text="Bar Graph", font=("Arial", 10), command=visualise_bar_graph).grid(row=1, column=1, sticky='w')
 
 # Dashboard
 tk.Label(control_frame, text='Dashboard:', font=("Arial", 10)).grid(row=2, column=0, sticky='w')
