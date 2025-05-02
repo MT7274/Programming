@@ -81,13 +81,18 @@ def visualise_pie_chart():
         return
 
     pie_window = tk.Toplevel(root)
-    pie_window.title("Pie Chart")
+    pie_window.title("Employees Per Department")
 
     pie_window.geometry("600x600")
     pie_window.resizable(False, False)
 
+    def absolute_value(val):
+        total = sum(employee_amount)
+        count = int(round(val * total / 100.0))
+        return f'{count}'
+
     fig, ax = plt.subplots(figsize=(6,6))
-    ax.pie(employee_amount, labels=employee_amount.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
+    ax.pie(employee_amount, labels=employee_amount.index, autopct=absolute_value, startangle=90, colors=plt.cm.Paired.colors)
     ax.axis('equal')
 
     pieCanvas = FigureCanvasTkAgg(fig, master=pie_window)
