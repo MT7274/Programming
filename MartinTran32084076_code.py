@@ -136,30 +136,42 @@ def visualise_bar_graph():
 
     plt.close(fig)
 
-def visualise_dashboard():
+def visualise_bar_plot():
     if data is None:
         messagebox.showerror("Error", "No data loaded")
         return
 
-    dashboard_window = tk.Toplevel(root)
-    dashboard_window.title("Dashboard Summary")
-    dashboard_window.geometry("400x300")
-    dashboard_window.resizable(False, False)
+    if 'MaritalStatus' not in data.columns:
+        messagebox.showerror("Error", "Required column not found in file")
+        return
 
-    avg_work_life_balance = data["WorkLifeBalance"].mean()
-    attrition_rate = (data['Attrition'].value_counts(normalize=True).get('Yes', 0)) * 100
-    employees_per_department = data["Department"].value_counts()
+    employee_amount = data['MaritalStatus'].value_counts()
 
-    tk.Label(dashboard_window, text="Dashboard Summary", font=("Arial", 16, "bold")).pack(pady=10)
+    if employee_amount.empty:
+        messagebox.showerror("Error", "Data invalid")
+        return
 
-    tk.Label(dashboard_window, text=f"Average Work-Life Balance {avg_work_life_balance}", font=("Arial", 12)).pack(pady=5)
-    tk.Label(dashboard_window, text=f"Attrition Rate {attrition_rate}%", font=("Arial", 12)).pack(pady=5)
-    tk.Label(dashboard_window, text=f"Employees per Department", font=("Arial", 12, "bold")).pack(pady=10)
+    bar_window = tk.Toplevel(root)
+    bar_window.title("Marital Status")
+    bar_window.geometry("700x500")
+    bar_window.resizable(False, False)
 
-    for department, count in employees_per_department.items():
-        tk.Label(dashboard_window, text=f"{department}: {count} employees", font=("Arial", 12)).pack(pady=3)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.bar(employee_amount.index, employee_amount.values, color='skyblue', edgecolor="black")
 
-def view_summary():
+    ax.set_title("Marital Status")
+    ax.set_xlabel("Marital Status")
+    ax.set_ylabel("Number of Employees")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    barCanvas = FigureCanvasTkAgg(fig, master=bar_window)
+    barCanvas.draw()
+    barCanvas.get_tk_widget().pack(pady=20)
+
+    plt.close(fig)
+
+def view_dashboard_summary():
     if summary_dict is None:
         messagebox.showerror("Error", "No summary available. Upload File")
         return
@@ -185,7 +197,7 @@ def view_summary():
 
     text_widget.config(state="disabled")
 
-def export_summary():
+def export_dashboard_summary():
     if summary_dict is None:
         messagebox.showerror("Error", "No summary available")
         return
@@ -233,13 +245,11 @@ tk.Button(control_frame, text="Pie Chart", font=("Arial", 10), command=visualise
 tk.Label(control_frame, text='Marital Status:', font=("Arial", 10)).grid(row=1, column=0, sticky='w')
 tk.Button(control_frame, text="Bar Graph", font=("Arial", 10), command=visualise_bar_graph).grid(row=1, column=1, sticky='w')
 
-# Dashboard
-tk.Label(control_frame, text='Dashboard:', font=("Arial", 10)).grid(row=2, column=0, sticky='w')
-tk.Button(control_frame, text="Dashboard", font=("Arial", 10), command=visualise_dashboard).grid(row=2, column=1, sticky='w')
+# Summary and ExportDashboard
+tk.Label(control_frame, text='Dashboard Summary:', font=("Arial", 10)).grid(row=2, column=0, sticky='w')
 
-# Summary and Export
-tk.Button(control_frame, text="View Summary", font=("Arial", 10), command=view_summary).grid(row=3, column=0, sticky='w', pady=(10, 0))
-tk.Button(control_frame, text="Export Summary", font=("Arial", 10), command=export_summary).grid(row=3, column=1, sticky='w', pady=(10, 0))
+tk.Button(control_frame, text="View summary", font=("Arial", 10), command=view_dashboard_summary).grid(row=2, column=1, sticky='w')
+tk.Button(control_frame, text="Export Summary", font=("Arial", 10), command=export_dashboard_summary).grid(row=3, column=1, sticky='w')
 
 root.grid_rowconfigure(0, weight=1)
 root.grid_rowconfigure(1, weight=1)
