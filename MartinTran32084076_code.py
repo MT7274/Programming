@@ -259,6 +259,7 @@ root.grid_rowconfigure(3, weight=1)
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=1)
 
+# Updates
 root.update()
 root.minsize(root.winfo_width(), root.winfo_height())
 root.update_idletasks()
