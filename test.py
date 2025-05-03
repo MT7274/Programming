@@ -59,6 +59,7 @@ def visualise_pie_chart():
 
     plt.show()
 
+#no
 pie_label = tk.Label(root, text='Click for pie chart:', font=("Arial", 10))
 pie_label.grid(row=3, column=0, padx=10, pady=10)
 
