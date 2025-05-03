@@ -251,6 +251,7 @@ tk.Label(control_frame, text='Dashboard Summary:', font=("Arial", 10)).grid(row=
 tk.Button(control_frame, text="View summary", font=("Arial", 10), command=view_dashboard_summary).grid(row=2, column=1, sticky='w')
 tk.Button(control_frame, text="Export Summary", font=("Arial", 10), command=export_dashboard_summary).grid(row=3, column=1, sticky='w')
 
+# Window
 root.grid_rowconfigure(0, weight=1)
 root.grid_rowconfigure(1, weight=1)
 root.grid_rowconfigure(2, weight=1)
